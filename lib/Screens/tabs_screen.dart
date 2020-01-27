@@ -8,32 +8,47 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
+
+  final List<Map<String, Object>> _pages = [
+    {'page': CategoriesScreen(), 'title': 'Categories'},
+    {'page': FavoritesScreen(), 'title': 'Your Favorite',},
+  ];
+
+  int _seletedPageIndex = 0;
+
+  void _selectPage(int index) {
+    setState(() {
+      _seletedPageIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, 
-      //initialIndex: 0, 0 is defualt
-      child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
-            title: Text('Meals'), 
-            bottom: TabBar(
-              tabs: <Widget>[
-                Tab(
-                  icon: Icon(Icons.category), 
-                  text: 'Categories',
-                ),
-                Tab(
-                  icon: Icon(Icons.star), 
-                  text: 'Favorites',
-                ),
-              ],
-            ),
+            title: Text(_pages[_seletedPageIndex]['title']), 
           ),
-          body: TabBarView(children: <Widget>[
-            CategoriesScreen(),
-            FavoritesScreen(),
-          ],),
-        ),
-      );
+          body: _pages[_seletedPageIndex]['page'],
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: _selectPage,
+            backgroundColor: Theme.of(context).primaryColor,
+            unselectedItemColor: Colors.white,
+            selectedItemColor: Theme.of(context).accentColor,
+            currentIndex: _seletedPageIndex,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                backgroundColor: Theme.of(context).primaryColor,
+                icon: Icon(Icons.category), 
+                title: Text('Categorirs'),
+              ),
+              BottomNavigationBarItem(
+                backgroundColor: Theme.of(context).primaryColor,
+                icon: Icon(Icons.category), 
+                title: Text('Favoriter'),
+              ),
+            ],
+          ),  
+        );
+        
   }
 }
